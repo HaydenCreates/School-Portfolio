@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Add Class</title>
+     {% load static %}
+    <link rel="stylesheet" href={%static 'homepage/post.css'%}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Add Student to Class</span></div>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <label for="class_select">Select Your Class:</label>
+            <select id="classNum" name="classNum">
+                {% for class_instance in teach_Classes %}
+                    <option value="{{ class_instance.classNum }}">{{ class_instance.name }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="checkbox-group">
+            <label for="class_select">Select Students to add:</label>
+            <div class="checkbox-group">
+              {% for choice in student %}
+                <label class="checkbox-label">
+                    <input type="checkbox" id="student" name="students" value="{{ choice.user.username }}">{{ choice.user.username }}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="row"><a href="/home">Return Home</a></div>
+          <div class="row button">
+            <input type="submit" value="Add">
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

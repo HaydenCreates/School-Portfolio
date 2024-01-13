@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Lesson</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'homepage/post.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="title"><span>Create Lesson</span></div>
+        <form action="" method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <label for="message" class="textarea-label"> Quiz Creation</label>
+            <div class="textarea">
+                <textarea
+                    rows="4"
+                    name="question_text"
+                    id="message"
+                    placeholder="Enter Question Here!"
+                    class="textarea-input"
+                ></textarea>
+            </div>
+            <input
+                type="text"
+                name="opt1"
+                id="subject"
+                placeholder="Option 1"
+                class="textarea-input"
+            />
+            <input
+                type="text"
+                name="opt2"
+                id="subject"
+                placeholder="Option 2"
+                class="textarea-input"
+            />
+            <input
+                type="text"
+                name="opt3"
+                id="subject"
+                placeholder="Option 3"
+                class="textarea-input"
+            />
+            <input
+                type="text"
+                name="opt4"
+                id="subject"
+                placeholder="Option 4"
+                class="textarea-input"
+            />
+            <label for="correct_answer">Correct Answer:</label>
+            <select id="ans" name="ans" required>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+                <option value="4">Option 4</option>
+            </select><br>
+            <button class="btn">
+                Add Question
+            </button>
+            <button type="button" class="btn" id="cancel">
+                Cancel
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

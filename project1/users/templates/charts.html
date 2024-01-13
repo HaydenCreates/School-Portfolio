@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>Chan Unviersity</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/homepage.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="#">Chan Unviersity</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="/results">Results</a></li>
+								<li><a href="/allPost">All Posts</a></li>
+								<li><a href="/allLessons">All Lessons</a></li>
+								<li><a href="/createPost/">Post a Message</a></li>
+								<li><a href="/login/">Login</a></li>
+								<li><a href="/signup/">Signup</a></li>
+								<li>
+									<form method='POST' action="{% url 'searchResult'%}">
+										{% csrf_token %}
+										<input type="search" placeholder="Search" name="searched">
+										<button type="submit"> Search </button>
+									</form>
+								</li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</nav>
+					</header>
+
+
+				<!-- Main -->
+				<div id="main">
+
+					<h2>Average Scores Per Semester</h2>
+
+					<div style="width: 100%;">
+						<canvas id="barChart" width="800" height="400"></canvas>
+					</div>
+
+					<script>
+						// JavaScript code to generate the bar chart
+						document.addEventListener('DOMContentLoaded', function () {
+							var ctx = document.getElementById('barChart').getContext('2d');
+
+							var data = {
+								labels: {{ chart_labels|safe }},
+								datasets: [
+									{
+										label: 'Average Score',
+										backgroundColor: 'rgba(75, 192, 192, 0.2)',
+										borderColor: 'rgba(75, 192, 192, 1)',
+										borderWidth: 1,
+										data: {{ chart_data|safe|default:'null' }}.filter(value => value !== null),
+									},
+								],
+							};
+
+							var options = {
+								scales: {
+									y: {
+										beginAtZero: true,
+									},
+								},
+							};
+
+							var myBarChart = new Chart(ctx, {
+								type: 'bar',
+								data: data,
+								options: {
+									maintainAspectRatio: false,
+								},
+							});
+						});
+					</script>
+
+					<br></br>
+
+					<a href="{% url 'letters' %}">
+						<button>Show All Letter Grades</button>
+					</a>
+
+				</div>
+			</div>
+	</body>
+</html>

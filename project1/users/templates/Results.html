@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>Results</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/allPost.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="/home">Chan Unviersity</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="/addClass/">Create Class</a></li>
+								<li><a href="/addStudent/">Add Students</a></li>
+								<li><a href="/allPost">All Posts</a></li>
+								<li><a href="/allLessons">All Lessons</a></li>
+								<li><a href="/createPost/">Post a Message</a></li>
+								{% if teacher %}
+									<li>
+										<a href="/chart">Charts</a>
+									</li>
+								{% endif %}
+								<li>
+									<form method='POST' action="{% url 'searchResult'%}">
+										{% csrf_token %}
+										<input type="search" placeholder="Search" name="searched">
+										<button type="submit"> Search </button>
+									</form>
+								</li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</nav>
+					</header>
+
+
+				<!-- Main -->
+					<div id="main">
+						<div class="center-container">
+
+							{% if teacher %}
+								<form method="POST" action="/sortedresults/">
+									{% csrf_token %}
+									<label for="sortSelect">Sort Results:</label>
+									<select id="sortSelect" name="sortSelect">
+										<option value="" disabled selected>Select Sorting Option</option>
+										<option value="1">Highest to Lowest</option>
+										<option value="2">Lowest to Highest</option>
+										<option value="3">Highest Score</option>
+										<option value="4">Lowest Score</option>
+										<option value="5">Average of Scores</option>
+									</select>
+									<button type="submit">Sort</button>
+								</form>
+								<br></br>
+
+								<h2> Multiple Choice Quiz Results </h2>
+									{% for grade in multiple %}
+										<h2 class="post-title">{{grade.class.name}}</h2>
+
+										{% for result in grade.results %}
+											<div class="wrapper">
+												<li class="post">
+													<p>Quiz: {{result.quiz.title}} </p>
+													<p>Student: {{ result.student.username }}</p>
+													{% if result %}
+														<p>Grade: {{ result.grade }}</p>
+													{% else %}
+														<h2>
+															No Grade.
+														</h2>
+													{% endif %}
+													<p>Number of Submissions: {{result.submissions}}</p>
+
+													<p> Weight: {{result.quiz.weight}} </p>
+
+													<form  method="POST" action="{% url 'change_quiz_weight' quiz_id=result.id %}">
+														{% csrf_token %}
+														<input type="number" name="newQuizWeight" id="newQuizWeight" placeholder="Enter new weight"  step="0.01" >
+														<button class="comment-button" type="submit">Change Weight</button>
+													</form>
+
+												</li>
+											</div>
+										{% endfor %}
+									{% empty %}
+										<h2 class="post-content"> No results available. </h2>
+									{% endfor %}
+										</li>
+									</div>
+
+									<h2> Text Lesson Results </h2>
+									{% for lessons in text %}
+										<h2>{{lessons.class.name}}</h2>
+
+										{% for result in lessons.results %}
+											<div class="wrapper">
+												<li class="post">
+													<p class="post-content">Lesson: {{result.lesson.title}}</p>
+													<p class="post-content">Student: {{ result.user.username }}</p>
+													<p class="post-content">Response: {{ result.response }}</p>
+													{% if result %}
+														<p class="post-content">Grade: {{ result.grade }}</p>
+													{% else %}
+														<h2>
+															No Grade.
+														</h2>
+													{% endif %}
+													<p>Number of Submissions: {{result.submissions}}</p>
+
+													<p> Weight: {{result.lesson.weight}} </p>
+
+													<form  method="POST" action="{% url 'change_grade' completetext_id=result.id %}">
+														{% csrf_token %}
+														<input type="number" name="newGrade" id="newGrade" placeholder="Enter new grade"  step="0.01" >
+														<button class="comment-button" type="submit">Change Grade</button>
+													</form>
+
+													<form  method="POST" action="{% url 'change_text_weight' completetext_id=result.id %}">
+														{% csrf_token %}
+														<input type="number" name="newTextWeight" id="newTextWeight" placeholder="Enter new weight"  step="0.01" >
+														<button class="comment-button" type="submit">Change Weight</button>
+													</form>
+
+												</li>
+											</div>
+										{% endfor %}
+									{% empty %}
+										<h2 class="no-post">No responses available.</h2>
+									{% endfor %}
+							{% else %}
+								<h2> Multiple Choice Quiz Results </h2>
+								<div class="container-center">
+									{% for grade in multiple %}
+										<h2 class="post-title">{{grade.class.name}}</h2>
+										<h2 class="post-title">{{grade.letter.final_grade}}</h2>
+											{% for result in grade.results %}
+												<div class="wrapper">
+													<li class="post">
+														<p>Quiz: {{result.quiz.title}} </p>
+														{% if result %}
+															<p>Grade: {{ result.grade }}</p>
+														{% else %}
+															<h2>
+																No Grade.
+															</h2>
+														{% endif %}
+														<p>Number of Submissions: {{result.submissions}}</p>
+														{% if grade.percent is 'None' %}
+															<p>Percentile: No attempts or Not final</p>
+														{% else %}
+															<p>Percentile: {{grade.percent}}</p>
+														{% endif %}
+													</li>
+												</div>
+											{% endfor %}
+									{% empty %}
+										<h2 class="post-content"> No results available. </h2>
+									{% endfor %}
+									<h2> Text Lesson Results </h2>
+										{% for lessons in text %}
+											<h2>{{lessons.class.name}}</h2>
+											{% for result in lessons.results %}
+											<div class="wrapper">
+												<li class="post">
+													<p class="post-content">Lesson: {{result.lesson.title}}</p>
+													<p class="post-content">Response: {{ result.response }}</p>
+													{% if result %}
+														<p class="post-content">Grade: {{ result.grade }}</p>
+													{% else %}
+														<h2>
+															No Grade.
+														</h2>
+													{% endif %}
+													<p>Number of Submissions: {{result.submissions}}</p>
+												</li>
+											</div>
+											{% endfor %}
+									{% empty %}
+										<h2 class="no-post">No responses available.</h2>
+									{% endfor %}
+							{% endif %}
+						</div>
+	</body>
+</html>

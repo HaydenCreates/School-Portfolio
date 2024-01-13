@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>Chan Unviersity</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/quiz.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="#">Chan Unviersity</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="/results">Results</a></li>
+								<li><a href="/allPost">All Posts</a></li>
+								<li><a href="/allLessons">All Lessons</a></li>
+								<li><a href="/createPost/">Post a Message</a></li>
+								<li><a href="/login/">Login</a></li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</nav>
+					</header>
+
+
+		<!-- Main -->
+			<div id="main">
+				<h2>{{ lesson.title }}</h2>
+
+				<!-- Render associated questions here -->
+				<ul>
+					<h2>Questions:</h2>
+					<ul>
+						<form action="{% url 'quizLesson' lesson.id %}"id="form" method="POST">
+                            {% csrf_token %}
+							{% if questions %}
+								{% for question in questions %}
+								<div class="questions">
+									<h3>Question {{ forloop.counter }}</h3>
+									<p>{{ question.question_text }}</p>
+									{% if question.opt1 %}
+										<div class="radio-container">
+											<label>
+												<input type="radio" name="{{question.id}}" value="1"> {{ question.opt1 }}
+											</label><br>
+										</div>
+									{% endif %}
+
+									{% if question.opt2 %}
+										<div class="radio-container">
+											<label>
+												<input type="radio" name="{{question.id}}" value="2"> {{ question.opt2 }}
+											</label><br>
+										</div>
+									{% endif %}
+
+									{% if question.opt3 %}
+										<div class="radio-container">
+											<label>
+												<input type="radio" name="{{question.id}}" value="3"> {{ question.opt3 }}
+											</label><br>
+										</div>
+									{% endif %}
+
+									{% if question.opt4 %}
+										<div class="radio-container">
+											<label>
+												<input type="radio" name="{{question.id}}" value="4"> {{ question.opt4 }}
+											</label><br>
+										</div>
+									{% endif %}
+								</div>
+								{% endfor %}
+
+								<div>
+									<input type="submit" value="Submit" name="submit">
+								</div>
+
+								{% if user_class %}
+									<label for="message" class="textarea-label"> Quiz Creation</label>
+									<div class="textarea">
+										<textarea
+											rows="4"
+											name="question_text"
+											id="message"
+											placeholder="Enter Question Here!"
+											class="textarea-input"
+										></textarea>
+									</div>
+									<input
+										type="text"
+										name="opt1"
+										id="subject"
+										placeholder="Option 1"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt2"
+										id="subject"
+										placeholder="Option 2"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt3"
+										id="subject"
+										placeholder="Option 3"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt4"
+										id="subject"
+										placeholder="Option 4"
+										class="textarea-input"
+									/>
+									<label for="correct_answer">Correct Answer:</label>
+									<select id="correct-answer" name="ans" required>
+										<option value="1">Option 1</option>
+										<option value="2">Option 2</option>
+										<option value="3">Option 3</option>
+										<option value="4">Option 4</option>
+									</select><br>
+									<input type="hidden" name="quiz" value="{{ lesson.id }}">
+									<input type="submit" value="Create">
+									<button type="button" class="btn" id="cancel" onclick="window.location.href='/allLessons'">
+										Cancel
+									</button>
+								{% endif %}
+
+							{% else %}
+								{% if user_class %}
+									<h2> No Questions assigned. </h2>
+									<label for="message" class="textarea-label"> Quiz Creation</label>
+									<div class="textarea">
+										<textarea
+											rows="4"
+											name="question_text"
+											id="message"
+											placeholder="Enter Question Here!"
+											class="textarea-input"
+										></textarea>
+									</div>
+									<input
+										type="text"
+										name="opt1"
+										id="subject"
+										placeholder="Option 1"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt2"
+										id="subject"
+										placeholder="Option 2"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt3"
+										id="subject"
+										placeholder="Option 3"
+										class="textarea-input"
+									/>
+									<input
+										type="text"
+										name="opt4"
+										id="subject"
+										placeholder="Option 4"
+										class="textarea-input"
+									/>
+									<label for="correct_answer">Correct Answer:</label>
+									<select id="correct-answer" name="ans" required>
+										<option value="1">Option 1</option>
+										<option value="2">Option 2</option>
+										<option value="3">Option 3</option>
+										<option value="4">Option 4</option>
+									</select><br>
+									<input type="hidden" name="quiz" value="{{ lesson.id }}">
+									<input type="submit" value="Create">
+									<button type="button" class="btn" id="cancel" onclick="window.location.href='/allLessons'">
+										Cancel
+									</button>
+								{% else %}
+									<h2> No Questions assigned. </h2>
+									<h2> Teacher needs to assign question</h2>
+								{% endif %}
+						{% endif %}
+                        </form>
+					</ul>
+				</ul>
+			</div>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Create Lesson</title>
+     {% load static %}
+    <link rel="stylesheet" href={%static 'users/login.css'%}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Create Lesson</span></div>
+        <form action="/createLesson/" method="POST">
+          {% csrf_token %}
+          <div class="row button">
+            <a href="/textLesson/">Text Lesson</a>
+          </div>
+          <div class="row button">
+            <a href="/choiceLesson/">Multiple Choice</a>
+          </div>
+          <div class="row button">
+            <a href="/home">Return Home</a>
+          </div>
+          <div class="row button">
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

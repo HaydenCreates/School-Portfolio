@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>All Lessons</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/allPost.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+				<header id="header">
+					<h1><a href="/home">Chan Unviersity</a></h1>
+					<nav class="links">
+						<ul>
+							<li><a href="/createLesson/">Create Lesson</a></li>
+							<li><a href="/results">Results</a></li>
+							<li><a href="/allPost">All Posts</a></li>
+							<li><a href="/createPost/">Post a Message</a></li>
+							<li>
+								<form method='POST' action="{% url 'searchResult'%}">
+									{% csrf_token %}
+									<input type="search" placeholder="Search" name="searched">
+									<button type="submit"> Search </button>
+								</form>
+							</li>
+							<li><a href="{% url 'logout' %}">Logout</a></li>
+						</ul>
+					</nav>
+				</header>
+
+
+				<!-- Main -->
+				<div id="main">
+					<div class="container-center">
+						<h2>Quiz</h2>
+						{% for quizzes in multiple %}
+							<h2> {{quizzes.class.name}} </h2>
+							{% for lessons in quizzes.results %}
+								<li class ="post">
+									<h2 class="post-title">{{ lessons.title }}</h2>
+									<p class="post-content">{{lessons.classNum}}</p>
+
+									<form method="post" action="{% url 'quizLesson' lessons.id %}">
+										{% csrf_token %}
+										<button type="submit">Complete Lesson</button>
+									</form>
+
+								</li>
+							{% endfor %}
+						{% empty %}
+							<li class="no-posts">Teacher has no Multiple Choice Lessons assigned</li>
+						{% endfor %}
+					</div>
+
+					<div class="container-center">
+						<h2>Text Lesson</h2>
+						{% for indiv in text %}
+							<h2> {{indiv.class.name}} </h2>
+							{% for lessons in indiv.results %}
+								<li class ="post">
+									<h2 class="post-title">{{ lessons.title }}</h2>
+									<p class= "post-content">{{ lessons.description }}</p>
+									<p class="post-content">{{lessons.classNum}}</p>
+									<p class="post-date">Created at: {{ lessons.created_at|date:"F j, Y H:i" }}</p>
+
+									<form method="post" action="{% url 'completeText' lessons.id %}">
+										{% csrf_token %}
+										<button type="submit">Complete Lesson</button>
+									</form>
+
+								</li>
+							{% endfor %}
+						{% empty %}
+						<li class="no-posts">Teacher has no Text Lessons assigned</li>
+						{% endfor %}
+					</div>
+				</div>
+		</div>
+	</body>
+</html>

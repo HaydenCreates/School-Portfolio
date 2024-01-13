@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>Chan Unviersity</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/homepage.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="#">Chan Unviersity</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="/results">Results</a></li>
+								<li><a href="/allPost">All Posts</a></li>
+								<li><a href="/allLessons">All Lessons</a></li>
+								<li><a href="/createPost/">Post a Message</a></li>
+								<li><a href="/login/">Login</a></li>
+								<li><a href="/signup/">Signup</a></li>
+								<li>
+									<form method='POST' action="{% url 'searchResult'%}">
+										{% csrf_token %}
+										<input type="search" placeholder="Search" name="searched">
+										<button type="submit"> Search </button>
+									</form>
+								</li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</nav>
+					</header>
+
+
+				<!-- Main -->
+				<div id="main">
+					{% for currClass in allGrades %}
+						<h2>{{ currClass.class.name }}</h2>
+						<table>
+							<thead>
+							<tr>
+								<th>Student</th>
+								<th>Weighted Grade</th>
+								<th>Final Grade </th>
+							</tr>
+							</thead>
+							<tbody>
+
+							<tr>
+								<td>{{ currClass.student.username }}</td>
+								<td>{{ currClass.weighted }}</td>
+
+								<td>{{currClass.final}}</td>
+							</tr>
+
+							</tbody>
+						</table>
+
+					{% endfor %}
+
+					<canvas id="myPieChart" width="400" height="400"></canvas>
+
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							// Sample data for the pie chart
+							var data = {
+								labels: {{ chart_labels|safe }},
+								datasets: [{
+									data: {{ chart_data|safe|default:'null' }}.filter(value => value !== null), // Values for each category
+									backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF8F9D', '#6EC6FF', '#FFEC8B', '#D4001F',
+									'#004080', '#FFAC33'], // Colors for each category
+								}]
+							};
+
+							// Get the canvas element
+							var ctx = document.getElementById('myPieChart').getContext('2d');
+
+							// Create the pie chart
+							var myPieChart = new Chart(ctx, {
+								type: 'pie',
+								data: data,
+								options: {
+									// Additional options for customization
+								}
+							});
+						});
+					</script>
+
+					<a href="{% url 'chart' %}">
+						<button>Show Bar Graph</button>
+					</a>
+
+				</div>
+			</div>
+	</body>
+</html>

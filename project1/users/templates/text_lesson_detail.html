@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+    REFERENCE THE CSS IN STATIC FOLDER
+-->
+<html>
+	<head>
+		<title>Chan Unviersity</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{%load static%}
+		<link rel="stylesheet" href={%static 'homepage/homepage.css'%}/>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="#">Chan Unviersity</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="/results">Results</a></li>
+								<li><a href="/allPost">All Posts</a></li>
+								<li><a href="/allLessons">All Lessons</a></li>
+								<li><a href="/createPost/">Post a Message</a></li>
+								<li><a href="/login/">Login</a></li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</nav>
+					</header>
+
+
+		<!-- Main -->
+			<div id="main">
+				<h2>{{ lesson.title }}</h2>
+				<p>{{ lesson.content }}</p>
+
+				<!-- Response text area -->
+				<ul>
+					<h2>Student response</h2>
+					{% if lesson.submitted %}
+						<p>This lesson has already been submitted.</p>
+					{% else %}
+
+						<form action="{% url 'completeText' lesson.id %}" method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="row">
+							<input id="response" name= "response" type="text" placeholder="Enter Response" required>
+							</div>
+							<div class="row">
+							<label for="attachment">Attachment: (optional)</label>
+							<input type="file" name="attachment" id="attachment">
+							</div>
+							{{form.errors}}
+							<div class="row"><a href="/home">Return Home</a></div>
+							<input type="submit" value="Post">
+
+						</form>
+					{% endif %}
+				</ul>
+			</div>
+	</body>
+</html>

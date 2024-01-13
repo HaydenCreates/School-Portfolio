@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Add Class</title>
+     {% load static %}
+    <link rel="stylesheet" href={%static 'homepage/post.css'%}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Add Class</span></div>
+        <form action="/addClass/" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <input id="name" name="name" type="text" placeholder="Enter Class Name" required>
+            {{ form.title.errors }}
+          </div>
+          <div class="row">
+            <textarea id="description" name="description" placeholder="Enter Class Description" required></textarea>
+          </div>
+        
+          <div class="row">
+            <input id="classNum" name= "classNum" type="text" placeholder="Enter Class Identifier (classNum)" required>
+          </div>
+          <input type="hidden" name="teacher" value="{{ request.user.id }}">
+          <div class="row"><a href="/home">Return Home</a></div>
+          <div class="row button">
+            <input type="submit" value="Add">
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'homepage/post.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="title"><span>Create Quiz</span></div>
+        <form action="/choiceLesson/" method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <label for="message" class="textarea-label"> Enter Quiz Name</label>
+            <div>
+                <input type="text" id="title" name="title" placeholder="Quiz title"/>
+                <div class="row">
+                    <label for="class_select">Select Your Class:</label>
+                    <select id="classNum" name="classNum">
+                        <option value="" disabled selected>Select a Class</option>
+                        {% for class_instance in user_classes %}
+                            <option value="{{ class_instance.id }}">{{ class_instance.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <input type="number" id="semester" name="semester" placeholder="Semeter #" required/>
+                <p><button type="submit">Create Quiz</button></p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

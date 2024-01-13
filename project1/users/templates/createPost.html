@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Create Post</title>
+     {% load static %}
+    <link rel="stylesheet" href={%static 'homepage/post.css'%}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Create Post</span></div>
+        <form action="/createPost/" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <input id="title" name="title" type="text" placeholder="Enter Post Title" required>
+            {{ form.title.errors }}
+          </div>
+          <div class="row">
+            <input id="content" name= "content" type="text" placeholder="Enter Post Content" required>
+          </div>
+          <div class="row">
+            <label for="attachment">Attachment:</label>
+            <input type="file" name="attachment" id="attachment">
+          </div>
+          <div class="row">
+            <label for="class_select">Select Your Class:</label>
+            <select id="classNum" name="classNum">
+                <option value="" disabled selected>Select a Class</option>
+                {% for class_instance in user_classes %}
+                    <option value="{{ class_instance.id }}">{{ class_instance.name }}</option>
+                {% endfor %}
+            </select>
+          </div>
+
+          <div class="row"><a href="/home">Return Home</a></div>
+          <div class="row button">
+            <input type="submit" value="Post">
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
